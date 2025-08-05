@@ -33,9 +33,19 @@ public class Space {
 	public void clearSpace() {
 		setActual(null);
 	}
+
+	public boolean isFixed() {
+		return fixed;
+	}
+
+	public int getExpected() {
+		return expected;
+	}
+	
+
 	
 	
 	
-	
+
 	
 }
