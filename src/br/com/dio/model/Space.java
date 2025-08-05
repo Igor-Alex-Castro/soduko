@@ -9,7 +9,7 @@ public class Space {
 	
 	
 	
-	public Space(Integer actual, int expected, boolean fixed) {
+	public Space( int expected, boolean fixed) {
 		
 		
 		this.expected = expected;
