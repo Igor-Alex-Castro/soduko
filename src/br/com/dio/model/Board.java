@@ -67,7 +67,7 @@ public class Board {
 	}
 	
 	
-	private void reset() {
+	public void reset() {
 		spaces.forEach( c -> c.forEach(Space::clearSpace)); 
 	}
 	

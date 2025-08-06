@@ -1,9 +1,7 @@
-import java.lang.StackWalker.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -12,6 +10,8 @@ import br.com.dio.model.Space;
 
 import static java.util.Objects.nonNull;
 import static java.util.Objects.isNull;
+
+import static br.com.dio.util.BoardTemplate.BOARD_TEMPLATE;
 
 public class Main {
 	
@@ -49,7 +49,7 @@ public class Main {
 	            switch(option) {
 	            case 1 -> startGame(positions);
 	            case 2 -> inputNumber();
-	            case 3 -> remoteNumber();
+	            case 3 -> removeNumber();
 	            case 4 -> showCurrentGame();
 	            case 5 -> showGameStatus();
 	            case 6 -> clearGame();
@@ -111,28 +111,103 @@ public class Main {
 			System.out.printf("A posição [%s, %s] tem uma valor fixo\n", col, row);
 		}
 	}
+	
+	private static void showCurrentGame() {
+		
+		
+		if(isNull(board)) {
+			System.out.println("O jogo não foi iniciado");
+			return;
+		}
+		
+		//post:
+		 /*Object ou Object[
+		  *
+		  * 
+		  */
+		Object[] args = new Object[81];
+		int argPos = 0;
+		
+		
+		for (int i = 0; i < BOARD_LIMIT; i++) {
+			
+			for (List<Space> col: board.getSpaces()) {
+				args[argPos++ ] = " " + (isNull(col.get(i).getActual()) ? " " : col.get(i).getActual()); 
+			}
+			
+		}
+		
+		System.out.println("Seu jogo se encontra da seguinte forma");
+		System.out.printf((BOARD_TEMPLATE) + "\n", args);
+		
+	}
+	
+	private static void showGameStatus() {
 
-	private static Object finishGame() {
-		// TODO Auto-generated method stub
-		return null;
+		if(isNull(board)) {
+			System.out.println("O jogo não foi iniciado");
+			return;
+		}
+		
+		
+		System.out.printf("O jogo atualmente se encontra no status %s\n", board.getStatus().getLabel());
+		
+		if(board.hasErros()) {
+			System.out.println("O jogo contém erros");
+		}else {
+			System.out.println("O não jogo contém erros");
+		}
+	}
+	
+	private static void clearGame() {
+
+		if(isNull(board)) {
+			System.out.println("O jogo não foi iniciado");
+			return;
+		}
+		
+		
+		System.out.println("Tem certeza que deseja limpar o seu jogo e perder todo seu progresso?");
+		String confirm = scanner.next();
+		
+		while(!confirm.equalsIgnoreCase("sim") && !confirm.equalsIgnoreCase("não")) {
+			System.out.println("Informe 'sim 'ou 'não'");
+			confirm = scanner.next();
+		}
+		
+		if(confirm.equalsIgnoreCase("sim")) {
+			board.reset();
+			
+		}
+		
 	}
 
-	private static Object clearGame() {
-		// TODO Auto-generated method stub
-		return null;
+
+	private static void finishGame() {
+		
+		if(isNull(board)) {
+			System.out.println("O jogo não foi iniciado");
+			
+		}
+		
+		if(board.gameIsFinihed()) {
+			System.out.println("Parabén concluiu o jogo");
+			showCurrentGame();
+			board =null;
+		}else if(board.hasErros()) {
+			System.out.println("Seu jogo contém, erros, verifique seu board e ajuste-o");
+		}else {
+			System.out.println("Você precisa preencher algum espeço");
+		}
+		
 	}
 
-	private static Object showGameStatus() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
 
-	private static Object showCurrentGame() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
-	private static void remoteNumber() {
+	private static void removeNumber() {
 		// TODO Auto-generated method stub
 		
 		if(isNull(board)) {
@@ -152,7 +227,7 @@ public class Main {
 		System.out.println("Informe a linha em que o número será removido");
 		int row = runUntilGetValidNumner(0, 8);
 		
-		System.out.printf("Informe o número que vai ser removido na posição [%s, %s]\n", col, row);
+	
 		
 		if(!board.clearValue(col, row)) {
 			System.out.printf("A posição [%s, %s] tem uma valor fixo\n", col, row);
