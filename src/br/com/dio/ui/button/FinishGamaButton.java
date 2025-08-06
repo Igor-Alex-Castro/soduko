@@ -14,7 +14,7 @@ public class FinishGamaButton extends JButton {
 
 	public FinishGamaButton(final ActionListener actionListener) {
 		
-		this.setText("Verificar jogo");
+		this.setText("Finalizar jogo");
 		this.addActionListener(actionListener);
 	}
 }
